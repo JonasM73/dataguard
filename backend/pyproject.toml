@@ -1,0 +1,67 @@
+[project]
+name = "dataguard"
+version = "0.1.0"
+description = "Plateforme de qualité et d'observabilité des données publiques"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    "sqlalchemy>=2.0.36",
+    "alembic>=1.14",
+    "psycopg[binary]>=3.2",
+    "pandas>=2.2",
+    "httpx>=0.27",
+    "python-multipart>=0.0.17",
+    "typer>=0.15",
+    "structlog>=24.4",
+    "opentelemetry-sdk>=1.28",
+    "opentelemetry-api>=1.28",
+    "opentelemetry-instrumentation-fastapi>=0.49b0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+    "ruff>=0.8",
+    "mypy>=1.13",
+    "pip-audit>=2.7",
+]
+
+[project.scripts]
+dataguard = "app.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM", "C4"]
+ignore = [
+    "B008",  # Depends() en valeur par défaut est l'idiome FastAPI
+    "UP046", # Generic[T] plutôt que la syntaxe PEP 695 : celle-ci exige 3.12,
+             # et le projet doit rester exécutable sur un interpréteur 3.11.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/*" = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["db: test nécessitant une base PostgreSQL"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+# Progressif : on durcit fichier par fichier plutôt que de tout bloquer d'emblée.
+disallow_untyped_defs = false
