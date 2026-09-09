@@ -1,0 +1,344 @@
+{
+  "dataset": "prix-des-carburants-en-france-flux-instantane-v2",
+  "source_url": "https://data.economie.gouv.fr/explore/dataset/prix-des-carburants-en-france-flux-instantane-v2/",
+  "license": "Licence Ouverte / Open Licence 2.0",
+  "captured_at": "2026-09-09T01:08:23.443422+00:00",
+  "csv": {
+    "separator": ";",
+    "encoding": "utf-8-sig",
+    "line_terminator": "CRLF"
+  },
+  "row_count_at_capture": 9805,
+  "column_count": 47,
+  "fields": [
+    {
+      "column_name": "id",
+      "data_type": "string",
+      "nullable": false,
+      "position": 0,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "latitude",
+      "data_type": "float",
+      "nullable": false,
+      "position": 1,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "longitude",
+      "data_type": "float",
+      "nullable": false,
+      "position": 2,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "Code postal",
+      "data_type": "string",
+      "nullable": false,
+      "position": 3,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "pop",
+      "data_type": "string",
+      "nullable": false,
+      "position": 4,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "Adresse",
+      "data_type": "string",
+      "nullable": false,
+      "position": 5,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "Ville",
+      "data_type": "string",
+      "nullable": true,
+      "position": 6,
+      "observed_null_pct": 0.05
+    },
+    {
+      "column_name": "horaires",
+      "data_type": "string",
+      "nullable": true,
+      "position": 7,
+      "observed_null_pct": 13.65
+    },
+    {
+      "column_name": "services",
+      "data_type": "string",
+      "nullable": true,
+      "position": 8,
+      "observed_null_pct": 6.95
+    },
+    {
+      "column_name": "prix",
+      "data_type": "string",
+      "nullable": true,
+      "position": 9,
+      "observed_null_pct": 1.63
+    },
+    {
+      "column_name": "rupture",
+      "data_type": "string",
+      "nullable": true,
+      "position": 10,
+      "observed_null_pct": 7.79
+    },
+    {
+      "column_name": "geom",
+      "data_type": "string",
+      "nullable": false,
+      "position": 11,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "Prix Gazole mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 12,
+      "observed_null_pct": 2.49
+    },
+    {
+      "column_name": "Prix Gazole",
+      "data_type": "float",
+      "nullable": true,
+      "position": 13,
+      "observed_null_pct": 2.49
+    },
+    {
+      "column_name": "Prix SP95 mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 14,
+      "observed_null_pct": 70.19
+    },
+    {
+      "column_name": "Prix SP95",
+      "data_type": "float",
+      "nullable": true,
+      "position": 15,
+      "observed_null_pct": 70.19
+    },
+    {
+      "column_name": "Prix E85 mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 16,
+      "observed_null_pct": 59.85
+    },
+    {
+      "column_name": "Prix E85",
+      "data_type": "float",
+      "nullable": true,
+      "position": 17,
+      "observed_null_pct": 59.85
+    },
+    {
+      "column_name": "Prix GPLc mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 18,
+      "observed_null_pct": 84.73
+    },
+    {
+      "column_name": "Prix GPLc",
+      "data_type": "float",
+      "nullable": true,
+      "position": 19,
+      "observed_null_pct": 84.73
+    },
+    {
+      "column_name": "Prix E10 mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 20,
+      "observed_null_pct": 26.42
+    },
+    {
+      "column_name": "Prix E10",
+      "data_type": "float",
+      "nullable": true,
+      "position": 21,
+      "observed_null_pct": 26.42
+    },
+    {
+      "column_name": "Prix SP98 mis à jour le",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 22,
+      "observed_null_pct": 27.2
+    },
+    {
+      "column_name": "Prix SP98",
+      "data_type": "float",
+      "nullable": true,
+      "position": 23,
+      "observed_null_pct": 27.2
+    },
+    {
+      "column_name": "Début rupture e10 (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 24,
+      "observed_null_pct": 77.12
+    },
+    {
+      "column_name": "Type rupture e10",
+      "data_type": "string",
+      "nullable": true,
+      "position": 25,
+      "observed_null_pct": 77.12
+    },
+    {
+      "column_name": "Début rupture sp98 (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 26,
+      "observed_null_pct": 75.18
+    },
+    {
+      "column_name": "Type rupture sp98",
+      "data_type": "string",
+      "nullable": true,
+      "position": 27,
+      "observed_null_pct": 75.18
+    },
+    {
+      "column_name": "Début rupture sp95 (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 28,
+      "observed_null_pct": 39.19
+    },
+    {
+      "column_name": "Type rupture sp95",
+      "data_type": "string",
+      "nullable": true,
+      "position": 29,
+      "observed_null_pct": 39.19
+    },
+    {
+      "column_name": "Début rupture e85 (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 30,
+      "observed_null_pct": 49.47
+    },
+    {
+      "column_name": "Type rupture e85",
+      "data_type": "string",
+      "nullable": true,
+      "position": 31,
+      "observed_null_pct": 49.47
+    },
+    {
+      "column_name": "Début rupture GPLc (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 32,
+      "observed_null_pct": 27.01
+    },
+    {
+      "column_name": "Type rupture GPLc",
+      "data_type": "string",
+      "nullable": true,
+      "position": 33,
+      "observed_null_pct": 27.01
+    },
+    {
+      "column_name": "Début rupture gazole (si temporaire)",
+      "data_type": "datetime",
+      "nullable": true,
+      "position": 34,
+      "observed_null_pct": 97.72
+    },
+    {
+      "column_name": "Type rupture gazole",
+      "data_type": "string",
+      "nullable": true,
+      "position": 35,
+      "observed_null_pct": 97.72
+    },
+    {
+      "column_name": "Carburants disponibles",
+      "data_type": "string",
+      "nullable": true,
+      "position": 36,
+      "observed_null_pct": 1.63
+    },
+    {
+      "column_name": "Carburants indisponibles",
+      "data_type": "string",
+      "nullable": true,
+      "position": 37,
+      "observed_null_pct": 2.86
+    },
+    {
+      "column_name": "Carburants en rupture temporaire",
+      "data_type": "string",
+      "nullable": true,
+      "position": 38,
+      "observed_null_pct": 77.83
+    },
+    {
+      "column_name": "Carburants en rupture definitive",
+      "data_type": "string",
+      "nullable": true,
+      "position": 39,
+      "observed_null_pct": 18.91
+    },
+    {
+      "column_name": "Automate 24-24 (oui/non)",
+      "data_type": "string",
+      "nullable": false,
+      "position": 40,
+      "observed_null_pct": 0.0
+    },
+    {
+      "column_name": "Services proposés",
+      "data_type": "string",
+      "nullable": true,
+      "position": 41,
+      "observed_null_pct": 6.95
+    },
+    {
+      "column_name": "Département",
+      "data_type": "string",
+      "nullable": true,
+      "position": 42,
+      "observed_null_pct": 0.05
+    },
+    {
+      "column_name": "code_departement",
+      "data_type": "string",
+      "nullable": true,
+      "position": 43,
+      "observed_null_pct": 0.05
+    },
+    {
+      "column_name": "Région",
+      "data_type": "string",
+      "nullable": true,
+      "position": 44,
+      "observed_null_pct": 0.05
+    },
+    {
+      "column_name": "code_region",
+      "data_type": "string",
+      "nullable": true,
+      "position": 45,
+      "observed_null_pct": 0.05
+    },
+    {
+      "column_name": "horaires détaillés",
+      "data_type": "string",
+      "nullable": true,
+      "position": 46,
+      "observed_null_pct": 32.42
+    }
+  ]
+}

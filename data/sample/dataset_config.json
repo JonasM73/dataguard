@@ -1,0 +1,199 @@
+{
+  "$comment": "Configuration du dataset des prix des carburants. Les valeurs de plage sont des bornes de plausibilité (destinées à attraper 0,00 ou 12,50), pas les min/max observés : une variation de marché normale ne doit pas lever d'alerte. Les seuils de nulls sont calés au-dessus du taux observé le 09/09/2026, parce qu'un carburant non distribué produit un null légitime.",
+
+  "$rules": "Quels contrôles s'appliquent à quelle colonne : complétude uniquement si la colonne déclare required, null_warn_pct ou null_fail_pct ; types si elle déclare type ; plages si elle déclare min, max, allowed_values ou pattern ; schéma sur les 47 colonnes du fichier de référence. Une colonne absente de cette section n'est donc suivie que par le contrôle de schéma — c'est le cas des colonnes JSON imbriquées (horaires, services, prix, rupture) et des libellés redondants.",
+
+  "csv": {
+    "separator": ";",
+    "encoding": "utf-8-sig",
+    "decimal": "."
+  },
+
+  "key_columns": ["id"],
+
+  "freshness": {
+    "columns": [
+      "Prix Gazole mis à jour le",
+      "Prix SP95 mis à jour le",
+      "Prix E85 mis à jour le",
+      "Prix GPLc mis à jour le",
+      "Prix E10 mis à jour le",
+      "Prix SP98 mis à jour le"
+    ],
+    "aggregate": "max",
+    "expected_frequency": "P1D"
+  },
+
+  "volume": {
+    "warn_pct": 10,
+    "fail_pct": 50
+  },
+
+  "consistency": {
+    "rules": [
+      {
+        "name": "freshness_not_in_future",
+        "description": "Une date de mise à jour de prix ne doit pas être postérieure à l'instant de l'ingestion.",
+        "type": "not_in_future",
+        "columns": [
+          "Prix Gazole mis à jour le",
+          "Prix SP95 mis à jour le",
+          "Prix E85 mis à jour le",
+          "Prix GPLc mis à jour le",
+          "Prix E10 mis à jour le",
+          "Prix SP98 mis à jour le"
+        ],
+        "tolerance": "PT15M"
+      }
+    ]
+  },
+
+  "weights": {
+    "schema": 3,
+    "types": 3,
+    "uniqueness": 3,
+    "completeness": 2,
+    "ranges": 2,
+    "freshness": 2,
+    "volume": 1,
+    "consistency": 1
+  },
+
+  "defaults": {
+    "null_warn_pct": 5.0,
+    "null_fail_pct": 20.0,
+    "type_warn_pct": 0.0,
+    "type_fail_pct": 1.0,
+    "range_warn_pct": 0.0,
+    "range_fail_pct": 1.0,
+    "duplicate_warn_pct": 0.0,
+    "duplicate_fail_pct": 0.1,
+    "consistency_warn_pct": 0.0,
+    "consistency_fail_pct": 1.0
+  },
+
+  "critical_weight": 3,
+
+  "columns": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "pattern": "^[0-9]{6,10}$"
+    },
+    "latitude": {
+      "type": "float",
+      "required": true,
+      "min": 4000000,
+      "max": 5200000,
+      "$comment": "degrés décimaux × 100000 dans la source ; 4139100 = 41,391°"
+    },
+    "longitude": {
+      "type": "float",
+      "required": true,
+      "min": -600000,
+      "max": 1000000
+    },
+    "Code postal": {
+      "type": "string",
+      "required": true,
+      "pattern": "^[0-9]{5}$",
+      "$comment": "à lire en texte : les codes du 01 au 09 perdraient leur zéro initial en numérique"
+    },
+    "pop": {
+      "type": "string",
+      "required": true,
+      "allowed_values": ["R", "A"]
+    },
+    "Ville": {
+      "type": "string",
+      "null_warn_pct": 2.0,
+      "null_fail_pct": 5.0
+    },
+    "Adresse": {
+      "type": "string",
+      "null_warn_pct": 2.0,
+      "null_fail_pct": 5.0
+    },
+    "geom": {
+      "type": "string",
+      "required": true
+    },
+    "Prix Gazole": {
+      "type": "float",
+      "min": 0.5,
+      "max": 5.0,
+      "null_warn_pct": 15.0,
+      "null_fail_pct": 40.0
+    },
+    "Prix SP95": {
+      "type": "float",
+      "min": 0.5,
+      "max": 5.0,
+      "null_warn_pct": 85.0,
+      "null_fail_pct": 95.0
+    },
+    "Prix E85": {
+      "type": "float",
+      "min": 0.3,
+      "max": 3.0,
+      "null_warn_pct": 80.0,
+      "null_fail_pct": 92.0
+    },
+    "Prix GPLc": {
+      "type": "float",
+      "min": 0.3,
+      "max": 3.0,
+      "null_warn_pct": 92.0,
+      "null_fail_pct": 97.0
+    },
+    "Prix E10": {
+      "type": "float",
+      "min": 0.5,
+      "max": 5.0,
+      "null_warn_pct": 45.0,
+      "null_fail_pct": 65.0
+    },
+    "Prix SP98": {
+      "type": "float",
+      "min": 0.5,
+      "max": 5.0,
+      "null_warn_pct": 45.0,
+      "null_fail_pct": 65.0
+    },
+    "Prix Gazole mis à jour le": { "type": "datetime" },
+    "Prix SP95 mis à jour le": { "type": "datetime" },
+    "Prix E85 mis à jour le": { "type": "datetime" },
+    "Prix GPLc mis à jour le": { "type": "datetime" },
+    "Prix E10 mis à jour le": { "type": "datetime" },
+    "Prix SP98 mis à jour le": { "type": "datetime" },
+    "Début rupture e10 (si temporaire)": { "type": "datetime" },
+    "Début rupture sp98 (si temporaire)": { "type": "datetime" },
+    "Début rupture sp95 (si temporaire)": { "type": "datetime" },
+    "Début rupture e85 (si temporaire)": { "type": "datetime" },
+    "Début rupture GPLc (si temporaire)": { "type": "datetime" },
+    "Début rupture gazole (si temporaire)": { "type": "datetime" },
+
+    "Automate 24-24 (oui/non)": {
+      "type": "string",
+      "required": true,
+      "allowed_values": ["Oui", "Non"]
+    },
+    "Type rupture e10": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "Type rupture sp98": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "Type rupture sp95": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "Type rupture e85": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "Type rupture GPLc": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "Type rupture gazole": { "type": "string", "allowed_values": ["definitive", "temporaire"] },
+    "code_departement": {
+      "type": "string",
+      "pattern": "^(2[AB]|[0-9]{2,3})$",
+      "null_warn_pct": 1.0,
+      "null_fail_pct": 5.0
+    },
+    "code_region": {
+      "type": "string",
+      "null_warn_pct": 1.0,
+      "null_fail_pct": 5.0
+    }
+  }
+}
