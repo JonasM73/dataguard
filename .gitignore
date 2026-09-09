@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+htmlcov/
+.coverage
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Environnement
+.env
+.env.local
+
+# Données. Les fichiers bruts téléchargés ne sont jamais versionnés, et les
+# CSV synthétiques non plus : ils pèsent 13 Mo, se régénèrent à l'identique
+# avec « make samples », et portent des dates absolues qui vieillissent.
+# Seuls le schéma de référence et la configuration du dataset sont suivis.
+data/raw/
+data/sample/*.csv
+*.csv.gz
+prix-des-carburants-*.csv
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Cache de compilation TypeScript
+*.tsbuildinfo

@@ -1,0 +1,9 @@
+# Fins de ligne normalisées dans le dépôt, LF dans l'arbre de travail : sans
+# cela, un projet développé sous Windows et bâti dans des conteneurs Linux
+# accumule des différences invisibles à chaque aller-retour.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
