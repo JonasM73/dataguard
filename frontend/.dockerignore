@@ -1,0 +1,6 @@
+# node_modules contient des binaires compilés pour la machine hôte : les copier
+# dans l'image la ralentit et peut la casser. npm install les réinstalle.
+node_modules
+dist
+.vite
+npm-debug.log*

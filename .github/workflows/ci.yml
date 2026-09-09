@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      # Les tests d'API tournent contre un vrai PostgreSQL : le projet s'appuie
+      # sur JSONB, une suite verte sur SQLite ne prouverait rien.
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: dataguard
+          POSTGRES_PASSWORD: dataguard
+          POSTGRES_DB: dataguard
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U dataguard"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: dataguard
+      POSTGRES_PASSWORD: dataguard
+      POSTGRES_DB: dataguard
+      DATAGUARD_OTEL_EXPORTER: none
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Installer les dépendances
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Créer la base de test
+        run: |
+          PGPASSWORD=dataguard psql -h localhost -U dataguard -d dataguard \
+            -c "CREATE DATABASE dataguard_test OWNER dataguard;"
+      - name: Lint
+        working-directory: backend
+        run: ruff check app tests alembic
+      - name: Formatage
+        working-directory: backend
+        run: ruff format --check app tests alembic
+      - name: Types
+        working-directory: backend
+        run: mypy app || true  # progressif : signalé, pas encore bloquant
+      - name: Migrations
+        working-directory: backend
+        run: alembic upgrade head
+      - name: Tests
+        working-directory: backend
+        run: pytest tests -q --cov=app --cov-report=term-missing
+      - name: Audit des dépendances
+        working-directory: backend
+        run: pip-audit --skip-editable
+      - name: Le contrat OpenAPI committé est à jour
+        working-directory: backend
+        run: |
+          python -c "import json;from app.main import create_app;print(json.dumps(create_app().openapi(),ensure_ascii=False,indent=2))" > openapi.json
+          git diff --exit-code openapi.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openapi
+          path: backend/openapi.json
+
+  frontend:
+    runs-on: ubuntu-latest
+    needs: [backend]
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      # Les types du dashboard sont engendrés depuis le contrat : s'ils
+      # diffèrent de ce qui est committé, c'est que le contrat a bougé sans que
+      # le frontend suive (ADR 007).
+      - uses: actions/download-artifact@v4
+        with:
+          name: openapi
+          path: backend
+      - run: npm run generate:api
+      - run: git diff --exit-code src/api/schema.d.ts
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test -- --run
+      - run: npm run build
+      - run: npm audit --audit-level=high || true
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+      # Construction seule, sans publication : on vérifie que les images se
+      # bâtissent, rien de plus.
+      - run: docker build -t dataguard-api ./backend
+      - run: docker build -t dataguard-web ./frontend
